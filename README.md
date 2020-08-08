@@ -18,6 +18,31 @@ docker pull donggonghua/oracle-tc12-orcl:firsttry
   - Teamcenter FMS Master
   - Siemens PLM License server (Optional)
  
+> Docker File: `Dockerfile-fmslic`
+
+```shell
+docker build --force-rm=true --no-cache=true -t tc-fms-lic-12 -f Dockerfile-fmslic .
+
+# Static port for vendor daemon used (28001)
+docker run -tid \
+	-p 4544:4544 \
+    -p 28000:28000 -p 28001:28001 \
+    --name docker-fmslic \
+	--network tcnetwork \
+	--add-host docker-host:your-host-ip \
+	--hostname docker-fmslic \
+	-e FSC_HOME=/apps/siemens/tc12.2.0.4/fsc \
+    -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
+    -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
+    -v /opt/dockersrc/siemens/tcvols:/data/tcvols \
+	tc-fms-lic-12
+```
+
+#### TcServer container
+  - Tomcat 8.5.57 Application Server
+  - Teamcenter Pool Manager TCP mode
+  - FSC Slave to support server pool
+
 > Docker File: `Dockerfile-webpool`
 
 ```shell
@@ -39,35 +64,8 @@ docker run -tid \
 	tc-web-pool-12
 ```
 
-#### TcServer container
-  - Tomcat 8.5.57 Application Server
-  - Teamcenter Pool Manager TCP mode
-  - FSC Slave to support server pool
-
-> Docker File: `Dockerfile-fmslic`
-
-```shell
-docker build --force-rm=true --no-cache=true -t tc-fms-lic-12 -f Dockerfile-fmslic .
-
-# Static port for vendor daemon used (28001)
-docker run -tid \
-	-p 4544:4544 \
-    -p 28000:28000 -p 28001:28001 \
-    --name docker-fmslic \
-	--network tcnetwork \
-	--add-host docker-host:your-host-ip \
-	--hostname docker-fmslic \
-	-e FSC_HOME=/apps/siemens/tc12.2.0.4/fsc \
-    -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
-    -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
-    -v /opt/dockersrc/siemens/tcvols:/data/tcvols \
-	tc-fms-lic-12
-
-```
-
 #### Tc Load Balaner
   - Nginx simple load balancer, to support multiple TcServer containers.
-
 
 ```shell
 docker run -tid \
