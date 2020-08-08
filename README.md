@@ -1,27 +1,73 @@
 
 
-### Teamcenter 12 in Docker
+## Teamcenter 12 in Docker
 
 
 > **Note** This is still pretty rough and require being creative here or there to really set it up. It also requires decent understanding about Teamcenter Unified Architecture. 
 
-* Oracle 18c image with TC schema populated
+#### Oracle 18c image with TC schema populated
  
-Docker Image: donggonghua/oracle-tc12-orcl
+Docker Image: [donggonghua/oracle-tc12-orcl](https://hub.docker.com/repository/docker/donggonghua/oracle-tc12-orcl)
+
+```shell
+docker push donggonghua/oracle-tc12-orcl:firsttry
+```
 
 
-* TcFMS and License (Dockerfile-webpool)
+#### TcFMS and License 
   - Teamcenter FMS Master
   - Siemens PLM License server (Optional)
+ 
+> Docker File: `Dockerfile-webpool`
 
-* TcServer container (Dockerfile-fmslic)
+```shell
+docker build --force-rm=true --no-cache=true -t tc-web-pool-12 -f Dockerfile-webpool .
+
+# Publish tomcat port is optional if load balancer is used below.
+# 8081 used for JMX which is optional
+docker run -tid \
+    -p 8080:8080 -p 8081:8081 \
+    --name docker-tcserver1 \
+	--add-host docker-host:your-host-ip \
+	--hostname docker-tcserver1 \
+	--network tcnetwork \
+    -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
+    -v /opt/dockersrc/siemens/tcdata:/data/tcdata \
+    -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
+    -v /opt/dockersrc/siemens/tcapps:/apps/siemens/tcapps \
+    -v /opt/dockersrc/siemens/scripts:/apps/scripts \
+	tc-web-pool-12
+```
+
+#### TcServer container
   - Tomcat 8.5.57 Application Server
   - Teamcenter Pool Manager TCP mode
   - FSC Slave to support server pool
 
-* TcLB
+> Docker File: `Dockerfile-fmslic`
+
+```shell
+docker build --force-rm=true --no-cache=true -t tc-fms-lic-12 -f Dockerfile-fmslic .
+
+# Static port for vendor daemon used (28001)
+docker run -tid \
+	-p 4544:4544 \
+    -p 28000:28000 -p 28001:28001 \
+    --name docker-fmslic \
+	--network tcnetwork \
+	--add-host docker-host:your-host-ip \
+	--hostname docker-fmslic \
+	-e FSC_HOME=/apps/siemens/tc12.2.0.4/fsc \
+    -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
+    -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
+    -v /opt/dockersrc/siemens/tcvols:/data/tcvols \
+	tc-fms-lic-12
+
+```
+
+#### Tc Load Balaner
   - Nginx simple load balancer, to support multiple TcServer containers.
-  - 
+
 
 ```shell
 docker run -tid \
@@ -31,10 +77,7 @@ docker run -tid \
 	--hostname docker-tclb \
 	--network tcnetwork \
 	nginx
-```
 
-
-```shell
 docker start docker-tclb 
 docker exec -it docker-tclb bash
 
