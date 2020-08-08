@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<preferences version="10.0">
+  <category name="FMS">
+    <category_description>No description available for this category.</category_description>
+    <preference name="Default_Transient_Server" type="String" array="false" disabled="false" protectionScope="User" envEnabled="true">
+      <preference_description>FMS uses this preference to set the default transient file server for the site. This is a URL to an FSC, used for the 4-tier transient volumes. This should point to a valid address of a deployed FSC that has access to the transient volume. OS Environment variable settings override the preference.</preference_description>
+      <context name="Teamcenter">
+        <value>http://docker-host:4544</value>
+      </context>
+    </preference>
+    <preference name="Default_Transient_Volume_Id" type="String" array="false" disabled="false" protectionScope="User" envEnabled="true">
+      <preference_description>Defines the transient volume identifier of an FMS transient volume on the Corporate server.
+This site preference will be set by the installer.</preference_description>
+      <context name="Teamcenter">
+        <value>145d1ac2102d50e2f6f8671f633cf952</value>
+      </context>
+    </preference>
+    <preference name="Transient_Volume_Installation_Location" type="String" array="false" disabled="false" protectionScope="User" envEnabled="true">
+      <preference_description>The 4-tier transient Volume can be mounted on all Teamcenter Server hosts at a given location. In such mounted transient volume scenario, the distributed transient volume can be configured using this preference.</preference_description>
+      <context name="Teamcenter">
+        <value>DOCKER-TCSERVER</value>
+      </context>
+    </preference>
+    <preference name="Transient_Volume_RootDir" type="String" array="true" disabled="false" protectionScope="User" envEnabled="true">
+      <preference_description>This preference is defined as a multivalue preference, to support a Unix and Windows NT heterogeneous site. FMS will use the first value which is valid for the platform, Unix or NT, where the validity check is simply the presence or absence of a backslash \ character. This preference is used with both 2 tier and 4 tier. For 4 tier  you have to additionally configure transient volume FSC process. Also for 4 tier the process owner for transient volume FSC process and tcserver should be the same owner.</preference_description>
+      <context name="Teamcenter">
+        <value>/tmp/transientVolume_infodba</value>
+      </context>
+    </preference>
+  </category>
+  <category name="File Caching">
+    <category_description>No description available for this category.</category_description>
+    <preference name="Fms_BootStrap_Urls" type="String" array="true" disabled="false" protectionScope="User" envEnabled="true">
+      <preference_description>Indicates the list of FSC Bootstrap servers. Starting with V10, FMS is being used by Multi-Site to transfer bulk data files between sites which are V10 or greater. During the local import phase when pulling data via a remote import, or during the import phase at this site when it is the target site to which data is being pushed from another site (via the data_sync utility for example), FMS servers will be used to transfer the bulk data files involved. Check with your site admin or FMS installer to get hostname(s) and port number(s) of the appropriate FSC &quot;Bootstrap Servers&quot; for this site. For example, if your nearest FSC server is running on a host named hostabc and listening on port 4447, the value for this preference can be defined as http://hostabc:4447.</preference_description>
+      <context name="Teamcenter">
+        <value>http://docker-host:4544</value>
+      </context>
+    </preference>
+  </category>
+</preferences>
+

@@ -1,0 +1,15 @@
+Default_Transient_Server=
+http://docker:4544
+
+Fms_BootStrap_Urls=
+http://docker:4544
+
+Transient_Volume_Installation_Location=
+9c6506d598c4
+
+Default_Transient_Volume_Id=
+4289a82dd68dfe7ac43f50063b1209ca
+
+Transient_Volume_RootDir=
+/tmp/transientVolume_infodba
+

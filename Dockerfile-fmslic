@@ -1,0 +1,56 @@
+
+FROM centos:7 as base
+
+# -------------------------------------------------------------
+# Env variables
+# -------------------------------------------------------------
+ENV SIEMENS_DIR=/apps/siemens \
+    TCDATA_DIR=/data/tcdata \
+    INSTALL_DIR=/apps/installers \
+    SETUP_OS_FILE=runOS-fmslic.sh \
+    RUN_TC_FILE=runTC.sh \
+    JAVA_HOME=/etc/alternatives/jre \
+    TC_ROOT=/apps/siemens/tc12.2.0.4 \
+    TC_DATA=/data/tcdata \
+    TC_LOG=/data/tclogs \
+    TC_LOGS=/data/tclogs \
+    TC_TMP_DIR=/data/tclogs
+
+# create user  1000:1000 for sharing host files
+COPY $SETUP_OS_FILE $INSTALL_DIR/
+
+RUN chmod ug+x $INSTALL_DIR/*.sh && \
+    sync && \
+    $INSTALL_DIR/$SETUP_OS_FILE && \
+    rm -rf $INSTALL_DIR
+
+#EXPOSE 4544
+#EXPOSE 28000
+#EXPOSE 28001
+
+#COPY $RUN_TC_FILE /usr/local/bin/
+
+#RUN chown infodba:dba /usr/local/bin/$TC_PROFILE_FILE && \
+#    chown infodba:dba /usr/local/bin/$RUN_TC_FILE && \
+#    chown infodba:dba $WEBAPPS_DIR/tomcat/bin/$SETENV_FILE && \
+#    chown infodba:dba $WEBAPPS_DIR/tomcat/conf/Catalina/localhost/$WEB_DESC_FILE && \
+#    chmod ug+x /usr/local/bin/$TC_PROFILE_FILE && \
+#    chmod ug+x /usr/local/bin/$RUN_TC_FILE
+#
+# shared from host
+#COPY tcroot
+#COPY tcdata
+
+USER infodba
+WORKDIR /home/infodba
+
+# RUN $WEBAPPS_DIR/tomcat/bin/startup.sh
+
+#HEALTHCHECK --interval=1m --start-period=5m \
+#    CMD "$WEBAPPS_DIR/$CHECK_TC_FILE" >/dev/null || exit 1
+
+# Default command for runtime
+#CMD $WEBAPPS_DIR/tomcat/bin/startup.sh ; /bin/bash
+CMD $TC_ROOT/flexlm/splmld_cntl start ; $TC_ROOT/fsc/rc.ugs.FSC_docker_vol ; /bin/bash
+
+
