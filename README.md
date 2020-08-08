@@ -10,7 +10,7 @@
 Docker Image: [donggonghua/oracle-tc12-orcl](https://hub.docker.com/repository/docker/donggonghua/oracle-tc12-orcl)
 
 ```shell
-docker push donggonghua/oracle-tc12-orcl:firsttry
+docker pull donggonghua/oracle-tc12-orcl:firsttry
 ```
 
 
