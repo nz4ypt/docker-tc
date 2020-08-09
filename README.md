@@ -5,6 +5,12 @@
 
 > **Note** This is still pretty rough and require being creative here or there to really set it up. It also requires decent understanding about Teamcenter Unified Architecture. 
 
+#### Teamcenter docker network
+
+```shell
+docker network create tcnetwork
+```
+
 #### Oracle 18c image with TC schema populated
  
 Docker Image: [donggonghua/oracle-tc12-orcl](https://hub.docker.com/repository/docker/donggonghua/oracle-tc12-orcl)
@@ -15,6 +21,7 @@ docker pull donggonghua/oracle-tc12-orcl:firsttry
 docker run -d -p 1521:1521 -p 5500:5500 \
     --name docker-tcorcl \
     --hostname docker-tcorcl \
+    --network tcnetwork \
     -e ORACLE_SID=TCORCL \
     -e ORACLE_PDB=TCORCLP1 \
     -e ORACLE_PWD=tcorcl \
