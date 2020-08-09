@@ -17,7 +17,7 @@ SRV=2
 
 for i in $(seq $SRV); do 
     docker run -tid \
-        -p 8080:8080 -p 8081:8081 \
+        -p 808$i:8080 -p 900$i:8081 \
         --name docker-tcserver$i \
         --add-host docker-host:$HOST_IP \
         --hostname docker-tcserver$i \

@@ -14,11 +14,12 @@ docker pull donggonghua/oracle-tc12-orcl:firsttry
 
 docker run -d -p 1521:1521 -p 5500:5500 \
     --name docker-tcorcl \
+    --hostname docker-tcorcl \
     -e ORACLE_SID=TCORCL \
     -e ORACLE_PDB=TCORCLP1 \
     -e ORACLE_PWD=tcorcl \
     -v /your-gitroot/docker-tc/oracle/startup:/opt/oracle/scripts/startup \
-    donggonghua/oracle-tc12-orcl
+    donggonghua/oracle-tc12-orcl:firsttry
 
 ```
 
@@ -60,7 +61,7 @@ docker build --force-rm=true --no-cache=true -t tc-web-pool-12 -f Dockerfile-web
 # Publish tomcat port is optional if load balancer is used below.
 # 8081 used for JMX which is optional
 docker run -tid \
-    -p 8080:8080 -p 8081:8081 \
+    -p 8080:8080 -p 9001:8081 \
     --name docker-tcserver1 \
     --add-host docker-host:your-host-ip \
     --hostname docker-tcserver1 \
