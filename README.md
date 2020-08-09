@@ -127,7 +127,7 @@ docker restart docker-tclb
 
 * Active Workspace (Load Balancer)
 
-![AWC](screenshots/docker-tc-lb-awc.pngraw=true "Active Workspace")
+![AWC](screenshots/docker-tc-lb-awc.png?raw=true "Active Workspace")
 
 
 
