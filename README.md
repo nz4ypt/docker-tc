@@ -118,6 +118,20 @@ exit
 docker restart docker-tclb
 ```
  
+#### Screenshots
+
+* Docker containers
+
+![docker-tc containers](https://1.bp.blogspot.com/-xnXC7mfX5KI/Xy7Hex9NaPI/AAAAAAAAESI/6oQdj4hxJygwGSFBvpPa7GlHrcRMo0LQwCLcBGAsYHQ/s640/tc-docker.png)
+
+* Active Workspace (Load Balancer)
+
+![AWC](https://1.bp.blogspot.com/-K0jVXT5cw5c/Xy7HtF1WPyI/AAAAAAAAESM/fiil-UvDvXo6-83olWBMW_EKnHt3kKH3QCLcBGAsYHQ/s640/docker-tc-lb-awc.png)
+
+
+
+
+
 
 
 
