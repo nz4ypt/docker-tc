@@ -34,17 +34,17 @@ docker build --force-rm=true --no-cache=true -t tc-fms-lic-12 -f Dockerfile-fmsl
 
 # Static port for vendor daemon used (28001)
 docker run -tid \
-	-p 4544:4544 \
+    -p 4544:4544 \
     -p 28000:28000 -p 28001:28001 \
     --name docker-fmslic \
-	--network tcnetwork \
-	--add-host docker-host:your-host-ip \
-	--hostname docker-fmslic \
-	-e FSC_HOME=/apps/siemens/tc12.2.0.4/fsc \
+    --network tcnetwork \
+    --add-host docker-host:your-host-ip \
+    --hostname docker-fmslic \
+    -e FSC_HOME=/apps/siemens/tc12.2.0.4/fsc \
     -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
     -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
     -v /opt/dockersrc/siemens/tcvols:/data/tcvols \
-	tc-fms-lic-12
+    tc-fms-lic-12
 ```
 
 #### TcServer container
@@ -62,15 +62,15 @@ docker build --force-rm=true --no-cache=true -t tc-web-pool-12 -f Dockerfile-web
 docker run -tid \
     -p 8080:8080 -p 8081:8081 \
     --name docker-tcserver1 \
-	--add-host docker-host:your-host-ip \
-	--hostname docker-tcserver1 \
-	--network tcnetwork \
+    --add-host docker-host:your-host-ip \
+    --hostname docker-tcserver1 \
+    --network tcnetwork \
     -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
     -v /opt/dockersrc/siemens/tcdata:/data/tcdata \
     -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
     -v /opt/dockersrc/siemens/tcapps:/apps/siemens/tcapps \
     -v /opt/dockersrc/siemens/scripts:/apps/scripts \
-	tc-web-pool-12
+    tc-web-pool-12
 ```
 
 #### Tc Load Balaner
@@ -80,10 +80,10 @@ docker run -tid \
 docker run -tid \
     -p 80:80 \
     --name docker-tclb \
-	--add-host docker-host:your-host-ip \
-	--hostname docker-tclb \
-	--network tcnetwork \
-	nginx
+    --add-host docker-host:your-host-ip \
+    --hostname docker-tclb \
+    --network tcnetwork \
+    nginx
 
 docker start docker-tclb 
 docker exec -it docker-tclb bash
@@ -122,18 +122,12 @@ docker restart docker-tclb
 
 * Docker containers
 
-![docker-tc containers](https://1.bp.blogspot.com/-xnXC7mfX5KI/Xy7Hex9NaPI/AAAAAAAAESI/6oQdj4hxJygwGSFBvpPa7GlHrcRMo0LQwCLcBGAsYHQ/s640/tc-docker.png)
+![TC Container](screenshots/tc-docker.png?raw=true "Container")
+
 
 * Active Workspace (Load Balancer)
 
-![AWC](https://1.bp.blogspot.com/-K0jVXT5cw5c/Xy7HtF1WPyI/AAAAAAAAESM/fiil-UvDvXo6-83olWBMW_EKnHt3kKH3QCLcBGAsYHQ/s640/docker-tc-lb-awc.png)
-
-
-
-
-
-
-
+![AWC](screenshots/docker-tc-lb-awc.pngraw=true "Active Workspace")
 
 
 
