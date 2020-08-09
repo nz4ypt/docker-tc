@@ -47,18 +47,18 @@ ret=$?
 if [ $ret -eq 0 ]; then
     echo "Custom scripts completed."
     echo "Start importing data pump dump files..."
-	
-	dpdir=`sqlplus -s infodba/infodba@$ORACLE_PDB << EOF
-	    set heading off;
-		set pagesize 0;
-        SELECT DIRECTORY_PATH FROM DBA_DIRECTORIES WHERE DIRECTORY_NAME='DATA_PUMP_DIR';
-		exit;
-	EOF`
-	
-	echo "Data Pump directory is: $dpdir"
+    
+    dpdir=`sqlplus -s infodba/infodba@$ORACLE_PDB << EOF
+set heading off;
+set pagesize 0;
+SELECT DIRECTORY_PATH FROM DBA_DIRECTORIES WHERE DIRECTORY_NAME='DATA_PUMP_DIR';
+exit;
+EOF`
+    
+    echo "Data Pump directory is: $dpdir"
     cp $ORACLE_BASE/scripts/startup/$DUMPFILE $dpdir/
 
-	echo "Importing TC12 OOTB schema"
+    echo "Importing TC12 OOTB schema"
     # assumes IDATA, ILOG, INDX, and SCHEMA INFODBA. no Mapping.
     impdp infodba/infodba@$ORACLE_PDB directory=DATA_PUMP_DIR dumpfile=$DUMPFILE logfile=import.log transform=disable_archive_logging:y
 
@@ -68,7 +68,7 @@ if [ $ret -eq 0 ]; then
 sqlplus infodba/infodba@$ORACLE_PDB << EOF
     UPDATE PIMANVOLUME SET PNODE_NAME='docker-fmslic'; 
        COMMIT; 
-	exit;
+    exit;
 EOF
     echo "Volume server updated."
 else
