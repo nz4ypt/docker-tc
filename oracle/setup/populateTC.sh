@@ -59,7 +59,7 @@ exit;
 EOF`
     
     echo "Data Pump directory is: $dpdir"
-    cp $ORACLE_BASE/scripts/startup/$DUMPFILE $dpdir/
+    cp $ORACLE_BASE/scripts/setup/$DUMPFILE $dpdir/
 
     echo "Importing TC12 OOTB schema"
     # assumes IDATA, ILOG, INDX, and SCHEMA INFODBA. no Mapping.

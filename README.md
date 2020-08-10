@@ -25,7 +25,7 @@ docker run -d -p 1521:1521 -p 5500:5500 \
     -e ORACLE_SID=TCORCL \
     -e ORACLE_PDB=TCORCLP1 \
     -e ORACLE_PWD=tcorcl \
-    -v /your-gitroot/docker-tc/oracle/startup:/opt/oracle/scripts/startup \
+    -v /your-gitroot/docker-tc/oracle/setup:/opt/oracle/scripts/setup \
     donggonghua/oracle-tc12-orcl:firsttry
 
 ```
