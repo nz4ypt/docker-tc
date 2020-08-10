@@ -21,4 +21,25 @@ else
 fi
 
 # Pool Manager
-$TC_ROOT/pool_manager/confs/tcua12/mgrstart
+#$TC_ROOT/pool_manager/confs/tcua12/mgrstart
+
+# Prep Pool configuration
+
+TMPL=tcua12
+
+cd $TC_ROOT/pool_manager/confs
+
+if [ ! -d $INSTANCE ]; then
+    cp -r $TMPL $INSTANCE
+    mv $INSTANCE/rc.tc.mgr_${TMPL}_PoolA $INSTANCE/rc.tc.mgr_${INSTANCE}_PoolA
+    for f in mgrstart mgrstop tcenv rc.tc.mgr_${INSTANCE}_PoolA; do
+        sed -i -e "s|$TMPL|$INSTANCE|g" $INSTANCE/$f
+    done
+    rm $INSTANCE/tecs.out
+    rm -rf $INSTANCE/logs/*
+else
+    echo "$INSTANCE already exists"
+fi
+ 
+cd ~
+$TC_ROOT/pool_manager/confs/$INSTANCE/rc.tc.mgr_${INSTANCE}_PoolA start
