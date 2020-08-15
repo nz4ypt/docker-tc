@@ -8,7 +8,7 @@ ENV SIEMENS_DIR=/apps/siemens \
     TCDATA_DIR=/data/tcdata \
     INSTALL_DIR=/apps/installers \
     SETUP_OS_FILE=runOS-fmslic.sh \
-    RUN_TC_FILE=runTC.sh \
+    RUN_TC_FILE=runTcFmsLic.sh \
     JAVA_HOME=/etc/alternatives/jre \
     TC_ROOT=/apps/siemens/tc12.2.0.4 \
     TC_DATA=/data/tcdata \
@@ -28,14 +28,10 @@ RUN chmod ug+x $INSTALL_DIR/*.sh && \
 #EXPOSE 28000
 #EXPOSE 28001
 
-#COPY $RUN_TC_FILE /usr/local/bin/
+COPY $RUN_TC_FILE /usr/local/bin/
 
-#RUN chown infodba:dba /usr/local/bin/$TC_PROFILE_FILE && \
-#    chown infodba:dba /usr/local/bin/$RUN_TC_FILE && \
-#    chown infodba:dba $WEBAPPS_DIR/tomcat/bin/$SETENV_FILE && \
-#    chown infodba:dba $WEBAPPS_DIR/tomcat/conf/Catalina/localhost/$WEB_DESC_FILE && \
-#    chmod ug+x /usr/local/bin/$TC_PROFILE_FILE && \
-#    chmod ug+x /usr/local/bin/$RUN_TC_FILE
+RUN chown infodba:dba /usr/local/bin/$RUN_TC_FILE && \
+    chmod ug+x /usr/local/bin/$RUN_TC_FILE
 #
 # shared from host
 #COPY tcroot
@@ -51,6 +47,7 @@ WORKDIR /home/infodba
 
 # Default command for runtime
 #CMD $WEBAPPS_DIR/tomcat/bin/startup.sh ; /bin/bash
-CMD $TC_ROOT/flexlm/splmld_cntl start ; $TC_ROOT/fsc/rc.ugs.FSC_docker_vol ; /bin/bash
+#CMD $TC_ROOT/flexlm/splmld_cntl start ; $TC_ROOT/fsc/rc.ugs.FSC_docker_vol ; /bin/bash
+CMD /usr/local/bin/$RUN_TC_FILE ; /bin/bash
 
 

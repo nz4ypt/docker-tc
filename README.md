@@ -67,6 +67,10 @@ docker build --force-rm=true --no-cache=true -t tc-web-pool-12 -f Dockerfile-web
 
 # Publish tomcat port is optional if load balancer is used below.
 # 8081 used for JMX which is optional
+# Jenkins agent
+# - assuming jenkins host is "myjenkins" on 8080
+# - assuming agent.jar and secret-file are located in jenkins/agent directory in 
+#   mapped volume. if need change, edit runTcWebPool.sh
 docker run -tid \
     -p 8080:8080 -p 9001:8081 \
     --name docker-tcserver1 \
@@ -76,6 +80,7 @@ docker run -tid \
     -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
     -v /opt/dockersrc/siemens/tcdata:/data/tcdata \
     -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
+    -v /opt/dockersrc/siemens/jenkins/tcserver1:/data/jenkins \
     -v /opt/dockersrc/siemens/tcapps:/apps/siemens/tcapps \
     -v /opt/dockersrc/siemens/scripts:/apps/scripts \
     tc-web-pool-12
