@@ -25,21 +25,29 @@ export JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom ${JAVA_OPTS}"
 export CATALINA_OPTS="-Denv=${SERVER_NAME}"
 
 if [ "x$JMX_PORT" == "x" ]; then
-        echo "JMX_PORT is not set"
+    echo "JMX_PORT is not set"
 else
-        echo "JMX_PORT is set as $JMX_PORT"
-        export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+    echo "JMX_PORT is set as $JMX_PORT"
+    export CATALINA_OPTS="$CATALINA_OPTS \
+-Dcom.sun.management.jmxremote \
+-Dcom.sun.management.jmxremote.port=$JMX_PORT \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.login.config=MgmtLdapConfig \
+-Djava.security.auth.login.config=$CATALINA_BASE/conf/ldap.config"
+
+
 fi
 
 echo -- "----------------------------------"
 echo "Using CATALINA_OPTS:"
 for arg in $CATALINA_OPTS; do
-        echo ">> " $arg
+    echo ">> " $arg
 done
 echo -- "----------------------------------"
 echo "Using JAVA_OPTS:"
 for arg in $JAVA_OPTS; do
-        echo ">> " $arg
+    echo ">> " $arg
 done
 echo -- "----------------------------------"
 

@@ -22,9 +22,7 @@ ENV SIEMENS_DIR=/apps/siemens \
     TC_TMP_DIR=/data/tclogs \
     WEB_DESC_FILE=tc.xml \
     AWC_DESC_FILE=awc.xml
-    #CHECK_TC_FILE=checkTCStats.sh
 
-# create user  1000:1000 for sharing host files
 COPY $SETUP_OS_FILE $INSTALL_DIR/
 
 RUN chmod ug+x $INSTALL_DIR/*.sh && \
@@ -34,15 +32,8 @@ RUN chmod ug+x $INSTALL_DIR/*.sh && \
 
 #EXPOSE 8080
 #EXPOSE 8081
-#EXPOSE 4544
-#EXPOSE 28000
-#EXPOSE 28001
 
-COPY $SETUP_TM_FILE $CHECK_TC_FILE $WEBAPPS_DIR/
-
-
-# chmod ug+x $WEBAPPS_DIR/$CHECK_TC_FILE
-
+COPY $SETUP_TM_FILE $WEBAPPS_DIR/
 
 RUN cd $WEBAPPS_DIR && tar zxvf $SETUP_TM_FILE && \
     ln -s apache-tomcat-8.5.57 tomcat && \
@@ -66,13 +57,7 @@ RUN chown infodba:dba /usr/local/bin/$TC_PROFILE_FILE && \
 USER infodba
 WORKDIR /home/infodba
 
-# RUN $WEBAPPS_DIR/tomcat/bin/startup.sh
-
-#HEALTHCHECK --interval=1m --start-period=5m \
-#    CMD "$WEBAPPS_DIR/$CHECK_TC_FILE" >/dev/null || exit 1
-
 # Default command for runtime
-#CMD $WEBAPPS_DIR/tomcat/bin/startup.sh ; /bin/bash
 #CMD $WEBAPPS_DIR/tomcat/bin/startup.sh ; $TC_ROOT/pool_manager/confs/tcua12/mgrstart ; /bin/bash
 CMD /usr/local/bin/$RUN_TC_FILE ; /bin/bash
 
