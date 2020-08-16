@@ -130,6 +130,48 @@ EOF
 exit
 docker restart docker-tclb
 ```
+
+#### Management Console (TMC)
+
+Manage Pool and Web instance through JMX.
+> Docker File: `Dockerfile-tmc`
+
+
+```shell
+docker build --force-rm=true --no-cache=true -t tc-mgmt-console-12 -f Dockerfile-tmc . 
+
+docker run -tid \
+    -p 8083:8083 \
+    --name docker-tmc \
+    --add-host docker-host:your-host-ip \
+    --hostname docker-tmc \
+    --network tcnetwork \
+    -v /opt/dockersrc/siemens/tc12.2.0.4:/apps/siemens/tc12.2.0.4 \
+    -v /opt/dockersrc/siemens/tclogs:/data/tclogs \
+    -v /opt/dockersrc/siemens/jenkins/tmc:/data/jenkins \
+    -v /opt/dockersrc/siemens/scripts:/apps/scripts \
+    tc-mgmt-console-12
+
+# if you wish to run TEM on TMC container (i.e. updating JMX URL)
+# add below two arguments
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -e DISPLAY=unix$DISPLAY \
+
+```
+
+#### Jenkins
+
+```shell
+docker run -tid \
+    -p 81:8080 \
+    -p 50000:50000 \
+    --name myjenkins \
+    --network tcnetwork \
+    --hostname myjenkins \
+    --add-host docker-host:your-host-ip \
+    -v /opt/dockersrc/jenkins:/var/jenkins_home \
+    jenkins/jenkins
+```
  
 #### Screenshots
 
@@ -141,6 +183,14 @@ docker restart docker-tclb
 * Active Workspace (Load Balancer)
 
 ![AWC](screenshots/docker-tc-lb-awc.png?raw=true "Active Workspace")
+
+* Management Console
+
+![TMC](screenshots/docker-tc-lb-tmc.png?raw=true "Management Console")
+
+* Jenkins
+
+![Jenkins](screenshots/docker-tc-lb-jenkins.png?raw=true "Jenkins")
 
 
 
