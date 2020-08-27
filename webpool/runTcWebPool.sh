@@ -102,7 +102,13 @@ if [ ! -d $INSTANCE ]; then
 else
     echo "$INSTANCE already exists"
 fi
+
+if [ ! -d $TC_LOGS ]; then
+    mkdir -p $TC_LOGS 2>/dev/null
+fi
  
+# run clearlocks 
+/apps/scripts/run_clearlocks.sh
 
 # Jenkins
 echo "Starting jenkins agent @myjenkins"
@@ -111,4 +117,5 @@ java -jar agent.jar -jnlpUrl http://myjenkins:8080/computer/$THISHOST/slave-agen
 
 cd ~
 rm -f $TC_ROOT/pool_manager/confs/$INSTANCE/mgr.tmp 2>/dev/null
-$TC_ROOT/pool_manager/confs/$INSTANCE/rc.tc.mgr_${INSTANCE}_PoolA start
+#$TC_ROOT/pool_manager/confs/$INSTANCE/rc.tc.mgr_${INSTANCE}_PoolA start
+$TC_ROOT/pool_manager/confs/$INSTANCE/mgrstart

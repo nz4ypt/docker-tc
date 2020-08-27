@@ -35,10 +35,11 @@ docker run -d -p 1521:1521 -p 5500:5500 \
   - Teamcenter FMS Master
   - Siemens PLM License server (Optional)
  
-> Docker File: `Dockerfile-fmslic`
+> Docker File: `fms/Dockerfile`
 
 ```shell
-docker build --force-rm=true --no-cache=true -t tc-fms-lic-12 -f Dockerfile-fmslic .
+cd fms
+docker build --force-rm=true --no-cache=true -t tc-fms-lic-12 .
 
 # Static port for vendor daemon used (28001)
 docker run -tid \
@@ -60,10 +61,11 @@ docker run -tid \
   - Teamcenter Pool Manager TCP mode
   - FSC Slave to support server pool
 
-> Docker File: `Dockerfile-webpool`
+> Docker File: `webpool/Dockerfile`
 
 ```shell
-docker build --force-rm=true --no-cache=true -t tc-web-pool-12 -f Dockerfile-webpool .
+cd webpool
+docker build --force-rm=true --no-cache=true -t tc-web-pool-12 .
 
 # Publish tomcat port is optional if load balancer is used below.
 # 8081 used for JMX which is optional
@@ -113,7 +115,7 @@ http {
     upstream backend {
         least_conn;
         server docker-tcserver1:8080;
-        server docker-tcserver2:8080;
+        #server docker-tcserver2:8080;
         #server docker-tcserver3:8080 backup;
         #server docker-tcserver4:8080 backup;
         #server docker-tcserver5:8080 backup;
@@ -134,11 +136,12 @@ docker restart docker-tclb
 #### Management Console (TMC)
 
 Manage Pool and Web instance through JMX.
-> Docker File: `Dockerfile-tmc`
+> Docker File: `tmc/Dockerfile`
 
 
 ```shell
-docker build --force-rm=true --no-cache=true -t tc-mgmt-console-12 -f Dockerfile-tmc . 
+cd tmc
+docker build --force-rm=true --no-cache=true -t tc-mgmt-console-12 . 
 
 docker run -tid \
     -p 8083:8083 \
