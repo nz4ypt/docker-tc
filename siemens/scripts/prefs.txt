@@ -1,15 +1,15 @@
 Default_Transient_Server=
-http://docker:4544
+http://corp:4544
 
 Fms_BootStrap_Urls=
-http://docker:4544
+http://corp:4544
 
 Transient_Volume_Installation_Location=
-9c6506d598c4
+corp
 
 Default_Transient_Volume_Id=
-4289a82dd68dfe7ac43f50063b1209ca
+0a6c855b84974d28644dc2cd38a21d3e
 
 Transient_Volume_RootDir=
-/tmp/transientVolume_infodba
+/data/tcvols/tvfmscorp
 
