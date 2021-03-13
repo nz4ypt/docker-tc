@@ -1,0 +1,17 @@
+version: "3.3"
+services:
+  tcorcl:
+    image: donggonghua/oracle-tc12-orcl:firsttry
+    container_name: tcorcl
+    hostname: tcorcl
+    environment:
+      - ORACLE_SID=TCORCL
+      - ORACLE_PDB=TCORCLP1
+      - ORACLE_PWD=tcorcl
+    #networks:
+    #  - tcnetwork
+    volumes:
+      - /opt/dockersrc/oracle/setup:/opt/oracle/scripts/setup
+    ports:
+      - "1521:1521"
+      - "5500:5500"

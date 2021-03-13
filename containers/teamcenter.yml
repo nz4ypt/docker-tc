@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+#  webtier:
+#    image: tomcat:8.5
+#    deploy:
+#      replicas: 1
+#      restart_policy:
+#        condition: on-failure
+#    volumes:
+#      - /opt/dockersrc/siemens/tcweb/webtier/deployment:/usr/local/tomcat/webapps
+#    #ports:
+#    #  - "7002:8080"
+#    #extra_hosts:
+#    #  - "tc1.hpgms.com:192.168.8.131"
+  corp:
+    # docker build . -f Dockerfile.corp -t my/tc/corp:12.4
+    image: my/tc/corp:12.4
+    hostname: corp
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+#    network:
+#      - tcnetwork
+    volumes:
+      - /opt/dockersrc/siemens/tc12.4.0.4:/apps/siemens/tc12.4.0.4
+      - /opt/dockersrc/siemens/tccs_config:/apps/siemens/tccs_config
+      - /opt/dockersrc/siemens/tcweb:/apps/siemens/tcweb
+      - /opt/dockersrc/siemens/tcdata:/data/tcdata
+      - /opt/dockersrc/siemens/tclogs:/data/tclogs
+      - /opt/dockersrc/siemens/tcvols:/data/tcvols
+      - /opt/dockersrc/siemens/scripts:/apps/scripts
+    #ports:
+    #  - "7002:8080"
+    #extra_hosts:
+    #  - "tc1.hpgms.com:192.168.8.131"

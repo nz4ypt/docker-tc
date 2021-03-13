@@ -3,6 +3,13 @@
 ## Teamcenter 12 in Docker
 
 
+### 12.4.0.4 V2 update with Microservices
+
+Refer to README.md in "containers" directory.
+
+
+
+
 > **Note** This is still pretty rough and require being creative here or there to really set it up. It also requires decent understanding about Teamcenter Unified Architecture. 
 
 #### Teamcenter docker network

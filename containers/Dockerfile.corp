@@ -1,0 +1,45 @@
+
+FROM centos:7 as base
+
+# -------------------------------------------------------------
+# Env variables
+# -------------------------------------------------------------
+ENV SIEMENS_DIR=/apps/siemens \
+    TCDATA_DIR=/data/tcdata \
+    INSTALL_DIR=/apps/installers \
+    SETUP_OS_FILE=runOSCorp.sh \
+    RUN_TC_FILE=runTcCorp.sh \
+    TC_PROFILE_FILE=tcprofile \
+    JAVA_HOME=/etc/alternatives/jre \
+    FMS_HOME=/apps/siemens/tc12.4.0.4/tccs \
+    TCCS_CONFIG_HOME=/apps/siemens/tccs_config \
+    TCCS_CONFIG=dev \
+    TC_ROOT=/apps/siemens/tc12.4.0.4 \
+    TC_DATA=/data/tcdata \
+    SPLM_LICENSE_SERVER=28000@tclic1.na.pg.com \
+    TC_LOG=/data/tclogs \
+    TC_LOGS=/data/tclogs \
+    TC_TMP_DIR=/data/tclogs
+
+COPY $SETUP_OS_FILE $INSTALL_DIR/
+
+RUN chmod ug+x $INSTALL_DIR/*.sh && \
+    sync && \
+    $INSTALL_DIR/$SETUP_OS_FILE && \
+    rm -rf $INSTALL_DIR
+
+COPY $TC_PROFILE_FILE $RUN_TC_FILE /usr/local/bin/
+
+RUN chown infodba:dba /usr/local/bin/$TC_PROFILE_FILE && \
+    chown infodba:dba /usr/local/bin/$RUN_TC_FILE && \
+    chmod ug+x /usr/local/bin/$TC_PROFILE_FILE && \
+    chmod ug+x /usr/local/bin/$RUN_TC_FILE
+
+
+USER infodba
+WORKDIR /home/infodba
+
+# Default command for runtime
+#CMD $WEBAPPS_DIR/tomcat/bin/startup.sh ; $TC_ROOT/pool_manager/confs/tcua12/mgrstart ; /bin/bash
+CMD /usr/local/bin/$RUN_TC_FILE ; /bin/bash
+
